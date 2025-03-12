@@ -9,6 +9,16 @@ export const getSingleUser = (userId) => {
   return cy.request('GET', `https://reqres.in/api/users/${userId}`);
 };
 
+// cypress/integration/utils/api-helpers.js
+
+export const getSingleUserInvalid = (userId) => {
+  return cy.request({
+      method: 'GET',
+      url: `https://reqres.in/api/users/${userId}`,
+      failOnStatusCode: false
+  });
+};
+
 export const createUser = (userData) => {
   return cy.request('POST', 'https://reqres.in/api/users', userData);
 };
@@ -26,12 +36,24 @@ export const deleteUser = (userId) => {
 };
 
 // Authentication API Helpers
+// cypress/integration/utils/api-helpers.js
+
 export const registerUser = (userData) => {
-  return cy.request('POST', 'https://reqres.in/api/register', userData);
+  return cy.request({
+      method: 'POST',
+      url: 'https://reqres.in/api/register',
+      body: userData,
+      failOnStatusCode: false // Tambahkan opsi ini
+  });
 };
 
 export const loginUser = (userData) => {
-  return cy.request('POST', 'https://reqres.in/api/login', userData);
+  return cy.request({
+      method: 'POST',
+      url: 'https://reqres.in/api/login',
+      body: userData,
+      failOnStatusCode: false // Tambahkan opsi ini
+  });
 };
 
 // Resources API Helpers
@@ -51,9 +73,30 @@ export const deleteResource = (resourceId) => {
   return cy.request('DELETE', `https://reqres.in/api/unknown/${resourceId}`);
 };
 
+// cypress/integration/utils/api-helpers.js
+
+export const getResourceInvalid = (resourceId) => {
+  return cy.request({
+      method: 'GET',
+      url: `https://reqres.in/api/unknown/${resourceId}`,
+      failOnStatusCode: false // Tambahkan opsi ini
+  });
+};
+
 // Delayed Response API Helpers
 export const getDelayedResponse = (delay) => {
   return cy.request('GET', `https://reqres.in/api/users?delay=${delay}`);
+};
+
+// cypress/integration/utils/api-helpers.js
+
+export const getDelayedResponseError = (delay, timeout = 100) => {
+  return cy.request({
+      method: 'GET',
+      url: `https://reqres.in/api/users?delay=${delay}`,
+      timeout: timeout,
+      failOnStatusCode: false, // Penting untuk menangani timeout dan error
+  });
 };
 
 // Validation Helpers
@@ -69,6 +112,8 @@ export const validateLoginSuccessfulResponse = (response) => {
   expect(response.status).to.eq(200);
   expect(response.body).to.have.property('token');
 };
+
+
 
 export const validateLoginUnsuccessfulResponse = (response) => {
   expect(response.status).to.eq(400);
