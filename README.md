@@ -1,6 +1,6 @@
 # Technical-Test-Cypress-BSI
 
-cypress/e2e /n
+cypress/e2e
 cypress/Video for the result
 Description for Directiories
 
